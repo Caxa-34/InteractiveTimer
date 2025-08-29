@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/music">
+        <file>end_timer.wav</file>
+    </qresource>
+</RCC>
