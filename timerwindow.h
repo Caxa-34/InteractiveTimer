@@ -1,20 +1,25 @@
-#ifndef TIMERWINDOW_H
-#define TIMERWINDOW_H
+#ifndef TIMERWINDOW_H //если этот маркер для предпроцессора был ранее определен, то код до #endif игнорируется (то есть если этот заголовочный файл уже включен в исходник)
+#define TIMERWINDOW_H //если не был определен, то определяет пустой маркер TIMERWINDOW_H, код до #endif включается в исходник
 
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QString>
 #include <QChar>
-#include <interactivetimer.h>
-#include <QSound>
+#include <QSoundEffect>
 
+#include <interactivetimer.h>
+#include <constants.h>
+
+//класс TimerWindow в пространстве имен Ui создается с помощью uic в ui_.h, ниже он просто объявляется для использования в классе окна
+//само пространство имен тут нужно что бы не было конфликта имен классов
 QT_BEGIN_NAMESPACE
 namespace Ui { class TimerWindow; }
 QT_END_NAMESPACE
 
+//идентификатор доступа определяет видимость функций/переменных переданных при наследии у потомка (public оставляет как указаны у родителя)
 class TimerWindow : public QMainWindow
 {
-    Q_OBJECT
+    Q_OBJECT //макрос qt который помечает класс для генерации файла moc_.cpp с помощью moc
 
 public:
     TimerWindow(QWidget *parent = nullptr);
@@ -67,4 +72,4 @@ private:
     ///Палитра главного окна
     QPalette pal;
 };
-#endif // TIMERWINDOW_H
+#endif // TIMERWINDOW_H (для #ifndef)

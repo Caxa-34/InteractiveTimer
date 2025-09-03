@@ -7,6 +7,8 @@
 #include <QTimer>
 #include <QDebug>
 
+#include <constants.h>
+
 /**
  * @brief Интерактивный таймер
  *
@@ -72,8 +74,6 @@ private:
     secondStart,
     ///Счетчик 10мс для плавного изменения цвета, 10мс
     mseconds;
-    ///Время цикла прогерсс-бара в "секретном" режиме, сек
-    int secondLoopBar;
     ///Счётчик-ограничитель 10мс для секундных тиков, 10мс
     int msCounter;
     ///Цвет фона

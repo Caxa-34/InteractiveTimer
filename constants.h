@@ -1,4 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#define TIMER_MIN_SEC 1
+#define TIMER_MAX_SEC 60
+#define TIMER_LOOP_SEC 10
+#define SECRET_NUMBER 42
+
 #endif // CONSTANTS_H

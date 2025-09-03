@@ -7,7 +7,6 @@ InteractiveTimer::InteractiveTimer(QObject *parent) : QObject(parent)
     typeCount = TypeCount::countDown;
     seconds = 0;
     mseconds = 0;
-    secondLoopBar = 10;
     msCounter = 0;
 }
 
@@ -15,10 +14,11 @@ void InteractiveTimer::startTimer(int seconds)
 {
     //проверка на первый запуск (или после сброса)
     if (this->seconds == 0) {
-        //установка первичных значений и заднего фона
+        //установка первичных значений
         secondStart = seconds;
         this->seconds = seconds;
 
+       //установка заднего фона: если отсчет вверх - рандомный цвет, если вниз - зеленый
         if (typeCount == TypeCount::countUp)
         {
             int r = QRandomGenerator::global()->bounded(256);
@@ -59,9 +59,15 @@ void InteractiveTimer::onTimeout()
     //плавное изменение цвета при обычном режиме с интерполяцией от зеленого к красному (используется интервал 10мс)
     if (typeCount == TypeCount::countDown) {
         if (secondStart <= 0) return; // защита от деления на 0
+
+        //расчет прогресса таймера где 0 - зеленый, 1 - красный
         double progress = 1.0 - (double)(secondStart * 100 - mseconds) / (secondStart * 100);
+
+        //защита от погрешностей на границах
         if (progress < 0) progress = 0;
         if (progress > 1) progress = 1;
+
+        //установка цвета для заднего фона
         int r = static_cast<int>(255 * progress);
         int g = static_cast<int>(255 * (1.0 - progress));
         int b = 0;
@@ -98,7 +104,7 @@ int InteractiveTimer::getPercent() {
     if (secondStart == 0) // проверка делителя на 0
         return 0;
     if (typeCount == TypeCount::countUp) //цикличное заполнение прогресс-бара при секретном режиме
-        return ((seconds - secondStart) % secondLoopBar)/(float)secondLoopBar * 100;
+        return ((seconds - secondStart) % TIMER_LOOP_SEC)/(float)TIMER_LOOP_SEC * 100;
     return seconds / (float)secondStart * 100; // при стандартном режиме
 }
 

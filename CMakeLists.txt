@@ -1,52 +1,32 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5) #установка версии cmake для сборки (данная и новее)
 
-project(InteractiveTimer LANGUAGES CXX)
+set(PROJECT_NAME InteractiveTimer) #переменная с названием поекта
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+#создание проекта (пространства проекта) с указанием языка
+#определяет глобальные переменные PROJECT_SOURCE_DIR (папка исходников) и PROJECT_BINARY_DIR (папка сборки)
+project(${PROJECT_NAME} LANGUAGES CXX)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON) #добавляет к списку include-путей папки PROJECT_SOURCE_DIR и PROJECT_BINARY_DIR, для поиска заголовочных файлов
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOUIC ON) #генерация заголовочного файла для .ui (ui_timerwindow.h) с помощью UIC
+set(CMAKE_AUTOMOC ON) #генерация moc_.cpp для каждого заголовочного файла в котором есть макрос Q_OBJECT с помощью MOC и добавляет его в список исходников
+set(CMAKE_AUTORCC ON) #генерация .cpp с помощью RCC, который будет вследствии компилироваться вместе с исходниками
 
-# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
-# Check http://doc.qt.io/qt-5/deployment-android.html for more information.
-# They need to be set before the find_package(Qt5 ...) call.
+set(CMAKE_CXX_STANDARD 11) #указание версии языка для компилятора
+set(CMAKE_CXX_STANDARD_REQUIRED ON) #строго указанная версия языка
 
-#if(ANDROID)
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-#    if (ANDROID_ABI STREQUAL "armeabi-v7a")
-#        set(ANDROID_EXTRA_LIBS
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
-#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
-#    endif()
-#endif()
-
+#проверка на наличие и доступ пакета qt5 и его компонентов, создание целей для линковки
+#REQUIRED - пакеты обязательны для сборки, иначе ошибка
 find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 
-qt5_add_resources(RESOURCES res.qrc)
-
-if(ANDROID)
-  add_library(InteractiveTimer SHARED
-    main.cpp
-    interactivetimer.cpp
-    interactivetimer.h
-    timerwindow.cpp
-    timerwindow.h
-    timerwindow.ui
-  )
-else()
-  add_executable(InteractiveTimer
+#создание объекта цели executable из списка исходников, в котором определяются файлы для дальнейшей работы uic, moc, rcc (которые настраивались выше)
+add_executable(${PROJECT_NAME}
     main.cpp
     timerwindow.cpp
     interactivetimer.cpp
-    interactivetimer.h
-    timerwindow.h
     timerwindow.ui
-    ${RESOURCES}
-  )
-endif()
+    res.qrc
+)
 
-target_link_libraries(InteractiveTimer PRIVATE Qt5::Widgets Qt5::Multimedia)
+#линковка с qt целями для использования include-пути и defines предпроцессором и линковки после компиляции
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Multimedia)
