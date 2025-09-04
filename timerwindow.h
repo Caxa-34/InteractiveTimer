@@ -6,6 +6,7 @@
 #include <QString>
 #include <QChar>
 #include <QSoundEffect>
+#include <QRegularExpressionValidator>
 
 #include <interactivetimer.h>
 #include <constants.h>

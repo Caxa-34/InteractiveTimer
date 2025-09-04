@@ -1,6 +1,7 @@
 #include "timerwindow.h"
 #include "./ui_timerwindow.h"
 
+
 TimerWindow::TimerWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::TimerWindow)
@@ -22,7 +23,7 @@ TimerWindow::TimerWindow(QWidget *parent)
         "   border-radius: 4px;"
         "}";
 
-    QRegularExpression mask("^\\d{1,2}$");
+    QRegularExpression mask("^(?:[1-9]|[1-5][0-9]|60)$");
     ui->leInputSec->setValidator(new QRegularExpressionValidator(mask, ui->leInputSec));
 
     //установка текста с учетом констант
